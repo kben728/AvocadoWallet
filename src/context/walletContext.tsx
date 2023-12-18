@@ -145,9 +145,9 @@ const WalletProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     try {
       const newWallet = await recoverWalletFromPrivateKey(privateKey);
       setWallet(newWallet);
-      saveWalletToStorage({...newWallet, privateKey: newWallet.privateKey});
+      saveWalletToStorage(newWallet);
 
-      await refreshAvocadoAndBalances(newWallet);
+      refreshAvocadoAndBalances(newWallet);
 
       Toast.show({
         type: 'success',

@@ -54,7 +54,7 @@ const EOAScreen = ({navigation}: any) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{height:'100%'}}>
       <View style={styles.container}>
         <Text style={styles.heading}>Externally Owned Account(EOA)</Text>
         <View style={styles.middleContainer}>

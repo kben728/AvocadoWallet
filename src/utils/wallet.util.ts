@@ -1,8 +1,6 @@
-import {HDNodeWallet, ethers, formatEther, formatUnits} from 'ethers';
+import {HDNodeWallet, ethers, formatEther} from 'ethers';
 import {avocadoProvider, forwarder, supportedChains} from './constants';
 import {Wallet} from 'ethers';
-import {BigNumberish} from 'ethers';
-import erc20Abi from './erc20Abi.json';
 
 export const generateNewWallet = () => {
   const wallet = ethers.Wallet.createRandom();
@@ -41,13 +39,12 @@ export const fetchAccountErc20Balances = async (
     for (const tokenName of Object.keys(tokens)) {
       const tokenContract = new ethers.Contract(
         tokens[tokenName],
-        erc20Abi,
+        ['function balanceOf(address account) view returns (uint256)'],
         provider
       );
 
       const senderBalance = await tokenContract.balanceOf(walletAddress);
-      const tokenDecimals = await tokenContract.decimals();
-      const formattedBalance = formatTokenBalance(senderBalance, tokenDecimals);
+      const formattedBalance = formatEther(senderBalance);
 
       console.log(
         `Balance for ${tokenName} on ${chain.name}: ${formattedBalance}`
@@ -58,13 +55,4 @@ export const fetchAccountErc20Balances = async (
   }
 
   return balances;
-};
-
-// Function to format token balance according to decimals
-const formatTokenBalance = (
-  balance: BigNumberish,
-  decimals: number
-): string => {
-  const balanceBN = formatUnits(balance, decimals);
-  return balanceBN.toString();
 };
